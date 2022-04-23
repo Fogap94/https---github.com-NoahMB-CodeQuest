@@ -13,14 +13,12 @@
 </head>
 <body>
 <?php include_once 'includes/header.php';?>
-    <br>
-
-    <div class ="SignUP_C">
-        <br>
-        <figure class ="card">
-          <figcaption>  
-              <br>
-          <form action="calendaPage.php" method="post" target="_blank">
+<div class ="SignUP_C">   
+<figure class ="card">
+          <figcaption>
+          <br>
+        <div class="content">
+            <form action="includes/login.inc.php" method="post">
             <h1>
                 Welcome Back!
             </h1>
@@ -46,7 +44,7 @@
             </p>
 
             <p> <strong> Don't have an accout yet?</strong> <a href="SignUp.php">Join Kaddoo.com now</a> </p>
-            <input type="text" name="family_name" id="form_family_name" placeholder="User Name / E-Mail" required="true">
+            <input type="text" name="uid" id="uid" placeholder="E-Mail" required="true">
             <br>
             <br>
             <br>
@@ -58,10 +56,10 @@
             <br>
 
             </form>
-          </figcaption>
-      </figure>      
-    </div>
-      
+            </figcaption>
+      </figure> 
+        </div>
+      </div>      
       <?php include_once 'includes/footer.php';?> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>

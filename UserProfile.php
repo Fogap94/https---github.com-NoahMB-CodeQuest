@@ -82,6 +82,10 @@
         <br>
         <br>
         <br>
+<<<<<<< HEAD
+       
+        <?php include_once 'includes/footer.php';?> 
+=======
       <div class="footer-basic">
         <footer>
             <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
@@ -96,5 +100,6 @@
             <p class="copyright">CODE QUEST © 2022</p>
         </footer>
     </div>
+>>>>>>> 51aa601fd43dd5654b0622df33cd7bf387578b33
 </body>
 </html>

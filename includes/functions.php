@@ -1,25 +1,25 @@
 <?php
 
-function emptyInputSignup($name, $email, $phonenumber, $username, $pwd, $pwdrepeat)
+function emptyInputSignup($name, $email, $phonenumber, $pwd, $pwdrepeat, $gender, $birthday, $LastName)
 {
     $result;
-    if (empty($name) || empty($email) || empty($phonenumber) || empty($username) || empty($pwd) || empty($pwdrepeat)) {
+    if (empty($name) || empty($email) || empty($phonenumber) || empty($pwd) || empty($pwdrepeat)|| empty($gender)|| empty($birthday)|| empty($LastName) ) {
         $result = true;
     } else {
         $result = false;
     }
     return $result;
 }
-function invalidUid($username)
-{
-    $result;
-    if (!preg_match("/^[a-zA-Z0-9]*$/", $username)) {
-        $result = true;
-    } else {
-        $result = false;
-    }
-    return $result;
-}
+// function invalidUid($username)
+// {
+//     $result;
+//     if (!preg_match("/^[a-zA-Z0-9]*$/", $username)) {
+//         $result = true;
+//     } else {
+//         $result = false;
+//     }
+//     return $result;
+// }
 function invalidEmail($email)
 {
     $result;
@@ -40,16 +40,16 @@ function pwdMatch($pwd, $pwdrepeat)
     }
     return $result;
 }
-function uidExists($conn, $username, $email)
+function uidExists($conn, $email)
 {
     $result = true;
-    $sql = "SELECT * FROM tblbesteller WHERE fldGebruikersnaam = ? OR fldMail = ?;";
+    $sql = "SELECT * FROM accounts WHERE Email = ?;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("location: ../signup.php?error=stmtfailed");
+        header("location: ../signup.php?error=stmtfailed1");
         exit();
     }
-    mysqli_stmt_bind_param($stmt, "ss", $username, $email);
+    mysqli_stmt_bind_param($stmt, "s", $email);
     mysqli_stmt_execute($stmt);
     $resultdata = mysqli_stmt_get_result($stmt);
     if ($row = mysqli_fetch_assoc($resultdata)) {
@@ -62,47 +62,44 @@ function uidExists($conn, $username, $email)
     exit();
 }
 
-function createUser($conn, $name, $phonenumber, $email, $username, $pwd)
+
+function createUser($conn, $name, $phonenumber, $email, $pwd, $gender, $birthday, $LastName)
 {
-    $sql = "INSERT INTO tblbesteller (fldVoorNaam, fldTel, fldMail , fldGebruikersnaam, fldWachtwoord) VALUES (?, ?, ?, ?, ?);";
+    $sql = "INSERT INTO accounts (FirstName, PhoneNr, Email , Gender, Birthdate, LastName ,Password) VALUES (?, ?, ?, ?, ?, ?, ?);";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("location: ../signup.php?error=stmtfailed");
+        header("location: ../signup.php?error=stmtfailed2");
         exit();
     }
 
     $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
 
-    mysqli_stmt_bind_param($stmt, "sssss", $name, $phonenumber, $email, $username, $hashedPwd);
+    mysqli_stmt_bind_param($stmt, "sssssss", $name, $phonenumber, $email, $gender, $birthday, $LastName, $hashedPwd);
 
-    mysqli_stmt_execute($stmt);
-    $id = $conn->insert_id;
-    $sql = "INSERT INTO tblrelatieacctype (fldmasterID, fldchildID) VALUES ('$id', '$id')";
-    mysqli_stmt_prepare($stmt, $sql);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     header("location: ../signup.php?error=none");
     exit();
 }
 
-function emptyInputLogin($username, $pwd)
+function emptyInputLogin($email, $pwd)
 {
     $result;
-    if (empty($username) || empty($pwd)) {
+    if (empty($email) || empty($pwd)) {
         $result = true;
     } else {
         $result = false;
     }
     return $result;
 }
-function loginUser($conn, $username, $pwd)
+function loginUser($conn, $email, $pwd)
 {
-    $uidExists = uidExists($conn, $username, $username);
+    $uidExists = uidExists($conn, $email);
     if ($uidExists === false) {
         header("location: ../login.php?error=wronglogin");
         exit();
     }
-    $pwdHashed = $uidExists["fldWachtwoord"];
+    $pwdHashed = $uidExists["Password"];
     $checkPwd = password_verify($pwd, $pwdHashed);
 
     if ($checkPwd === false) {
@@ -110,25 +107,10 @@ function loginUser($conn, $username, $pwd)
         exit();
     } else if ($checkPwd === true) {
         session_start();
-        $sql = "SELECT tblafdeling.fldBedrijfID FROM tblafdelingbesteller
-        INNER JOIN tblafdeling USING(fldAfdelingID)
-        WHERE tblafdelingbesteller.fldBestellerID = ?
-        LIMIT 1";
-        $stmt = mysqli_stmt_init($conn);
-        if (!mysqli_stmt_prepare($stmt, $sql)) {
-            header("location: ../signup.php?error=stmtfailed");
-            exit();
-        }
-        mysqli_stmt_bind_param($stmt, "s", $id);
-        mysqli_stmt_execute($stmt);
-        $resultdata = mysqli_stmt_get_result($stmt);
-        $uidBedrijf = mysqli_fetch_assoc($resultdata);
-        mysqli_stmt_close($stmt);
-        $_SESSION["fldBestellerID"] = $uidExists["fldBestellerID"];
-        $_SESSION["fldGebruikersnaam"] = $uidExists["fldGebruikersnaam"];
-        $_SESSION["fldBedrijfID"] = $uidBedrijf["fldBedrijfID"];
+        $_SESSION["fldAccountsID"] = $uidExists["AccountsID"];
+        $_SESSION["Firstname"] = $uidExists["Firstname"];
 
-        header("location: ../../frontend/index.php?table=created");
+        header("location: ../calendaPage.php?table=created");
     }
 }
 
