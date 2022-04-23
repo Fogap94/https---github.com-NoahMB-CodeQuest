@@ -13,10 +13,14 @@
 </head>
 <body>
 <?php include_once 'includes/header.php';?>
-      <div class="SignUP_C">
-          <br>
-        <div class="content">
-            <form action="calendaPage.php" method="post" target="_blank">
+    <br>
+
+    <div class ="SignUP_C">
+        <br>
+        <figure class ="card">
+          <figcaption>  
+              <br>
+          <form action="calendaPage.php" method="post" target="_blank">
             <h1>
                 Welcome Back!
             </h1>
@@ -54,9 +58,10 @@
             <br>
 
             </form>
-           
-        </div>
-      </div>      
+          </figcaption>
+      </figure>      
+    </div>
+      
       <?php include_once 'includes/footer.php';?> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
